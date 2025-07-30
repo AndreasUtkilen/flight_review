@@ -311,6 +311,54 @@ def generate_plots(ulog, px4_ulog, db_data, vehicle_data, link_to_3d_page,
 
     if data_plot.finalize() is not None: plots.append(data_plot)
 
+    # Optical flow
+    if any(elem.name == 'vehicle_optical_flow' for elem in data):
+        # Pixel flow X / Delta angle X
+        data_plot = DataPlot(data, plot_config, 'vehicle_optical_flow',
+                             y_axis_label='rad', title='Optical Flow X',
+                             plot_height='small', changed_params=changed_params,
+                             x_range=x_range)
+        data_plot.add_graph(['pixel_flow[0]', 'delta_angle[0]'], colors8[0:2], ['Flow X', 'Delta angle X'], mark_nan=True)
+        if data_plot.finalize() is not None: plots.append(data_plot)
+
+        # Pixel flow Y / Delta angle Y
+        data_plot = DataPlot(data, plot_config, 'vehicle_optical_flow',
+                             y_axis_label='rad', title='Optical Flow Y',
+                             plot_height='small', changed_params=changed_params,
+                             x_range=x_range)
+        data_plot.add_graph(['pixel_flow[1]', 'delta_angle[1]'], colors8[0:2], ['Flow Y', 'Delta angle Y'], mark_nan=True)
+
+        if data_plot.finalize() is not None: plots.append(data_plot)
+ 
+        # Vehicle VX / Estimator optical flow VX
+        data_plot = DataPlot(data, plot_config, 'vehicle_local_position',
+                             y_axis_label='m/s', title='Estimated Flow VX',
+                             plot_height='small', changed_params=changed_params,
+                             x_range=x_range)
+        estimators = [elem.name for elem in data if 'estimator_optical_flow_vel' in elem.name]
+        for i, estimator in enumerate(estimators):
+            data_plot.change_dataset(estimator)
+            data_plot.add_graph(['vel_body[0]'], colors8[i+4:i+5], [f"Estimator {i} VX"], mark_nan=True)
+        data_plot.change_dataset('vehicle_local_position')
+        data_plot.add_graph(['vx'], colors8[0:1], ['Vehicle VX'], mark_nan=True)
+
+        if data_plot.finalize() is not None: plots.append(data_plot)
+
+        # Vehicle VY / Estimator optical flow VY
+        data_plot = DataPlot(data, plot_config, 'vehicle_local_position',
+                             y_axis_label='m/s', title='Estimated Flow VY',
+                             plot_height='small', changed_params=changed_params,
+                             x_range=x_range)
+        estimators = [elem.name for elem in data if 'estimator_optical_flow_vel' in elem.name]
+        for i, estimator in enumerate(estimators):
+            data_plot.change_dataset(estimator)
+            data_plot.add_graph(['vel_body[1]'], colors8[i+4:i+5], [f"Estimator {i} VY"], mark_nan=True)
+        data_plot.change_dataset('vehicle_local_position')
+        data_plot.add_graph(['vy'], colors8[0:1], ['Vehicle VY'], mark_nan=True)
+
+        if data_plot.finalize() is not None: plots.append(data_plot)
+
+
 
     # Visual Odometry (only if topic found)
     if any(elem.name == 'vehicle_visual_odometry' for elem in data):

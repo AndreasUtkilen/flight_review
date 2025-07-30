@@ -48,10 +48,10 @@ function validateForm() {
         valid = false;
     }
     var email = document.getElementById('email').value;
-    if (!email.includes("@") || email.length < 5) { // very simple check
-        error_html += "E-Mail, "
-        valid = false;
-    }
+    //if (!email.includes("@") || email.length < 5) { // very simple check
+    //    error_html += "E-Mail, "
+    //    valid = false;
+    //}
     if (document.getElementById('file').value.length == 0) {
         error_html += "Log File, "
         valid = false;

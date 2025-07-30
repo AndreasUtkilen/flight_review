@@ -316,7 +316,9 @@ def load_ulog_file(file_name):
                   'sensor_gyro_fifo', 'vehicle_angular_acceleration',
                   'ekf2_timestamps', 'manual_control_switches', 'event',
                   'vehicle_imu_status', 'actuator_motors', 'actuator_servos',
-                  'vehicle_thrust_setpoint', 'vehicle_torque_setpoint',
+                  'vehicle_thrust_setpoint', 'vehicle_torque_setpoint', 'vehicle_optical_flow',
+                  'estimator_optical_flow_vel',
+                  'estimator_optical_flow_vel.00','estimator_optical_flow_vel.01','estimator_optical_flow_vel.02',
                   'failsafe_flags']
     try:
         ulog = ULog(file_name, msg_filter, disable_str_exceptions=True)
